@@ -1,6 +1,6 @@
 {
   "name": "react-native-depth-health",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "react-native-depth-health",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
