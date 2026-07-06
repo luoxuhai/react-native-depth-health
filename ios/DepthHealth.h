@@ -1,5 +1,5 @@
 #import <DepthHealthSpec/DepthHealthSpec.h>
 
-@interface DepthHealth : NSObject <NativeDepthHealthSpec>
+@interface DepthHealth : NativeDepthHealthSpecBase <NativeDepthHealthSpec>
 
 @end

@@ -12,9 +12,14 @@ export type DepthSensorHealth = DepthSensor & {
   healthy: boolean;
 };
 
+export type DepthSensorFilter = {
+  type?: DepthSensorType;
+  position?: DepthSensorPosition;
+};
+
 export interface Spec extends TurboModule {
   getSensors(): DepthSensor[];
-  checkSensors(): Promise<DepthSensorHealth[]>;
+  checkSensors(filter: DepthSensorFilter): Promise<DepthSensorHealth[]>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('DepthHealth');

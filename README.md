@@ -45,26 +45,19 @@ The iOS implementation maps:
 Checks each available iOS depth sensor and resolves with a health result.
 
 ```ts
+type DepthSensorFilter = {
+  type?: 'structured-light' | 'time-of-flight';
+  position?: 'front' | 'back';
+};
+
 type DepthSensorHealth = {
   type: 'structured-light' | 'time-of-flight';
   position: 'front' | 'back';
   healthy: boolean;
 };
 
-function checkSensors(): Promise<DepthSensorHealth[]>;
+function checkSensors(filter?: DepthSensorFilter): Promise<DepthSensorHealth[]>;
 ```
-
-Health is evaluated with AVFoundation by:
-
-1. Opening `.builtInTrueDepthCamera` and/or `.builtInLiDARDepthCamera`.
-2. Attaching an `AVCaptureDepthDataOutput` with `isFilteringEnabled = false`.
-3. Receiving `AVCaptureSynchronizedDepthData` through
-   `AVCaptureDataOutputSynchronizer`.
-4. Marking a sensor unhealthy when `depthDataWasDropped` is `true` and
-   `droppedReason` is `AVCaptureOutput.DataDroppedReason.discontinuity`.
-
-If a sensor cannot be opened or no synchronized depth sample is received before
-the native timeout, the sensor is reported as unhealthy.
 
 ## Usage
 
@@ -76,6 +69,9 @@ const sensors = getSensors();
 
 const health = await checkSensors();
 // [{ type: 'structured-light', position: 'front', healthy: true }, ...]
+
+const frontHealth = await checkSensors({ position: 'front' });
+const lidarHealth = await checkSensors({ type: 'time-of-flight' });
 ```
 
 ## iOS permissions

@@ -1,5 +1,5 @@
 PODS:
-  - DepthHealth (0.1.0):
+  - DepthHealth (0.2.0):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2000,7 +2000,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  DepthHealth: d8622c9d9d985c9729ba5f5b88bbae2c706a0977
+  DepthHealth: 8afbb8cc16b88850066b0bcf97cafd400e775553
   FBLazyVector: c00c20551d40126351a6783c47ce75f5b374851b
   hermes-engine: 9c9926d3a0c21e04aba3c3b9ff09b1465a5ff7f1
   RCTDeprecation: 3bb167081b134461cfeb875ff7ae1945f8635257
@@ -2075,6 +2075,6 @@ SPEC CHECKSUMS:
   ReactNativeDependencies: b892af6c8be04d493759dd8ffb3428f068027a48
   Yoga: cc155241ea30670878e270d52d74cf29487c4bbb
 
-PODFILE CHECKSUM: f0a2c2220fce2b07eef5002189c41f58427bd590
+PODFILE CHECKSUM: 3d308af27618b18a5a76bd03edc151d5c195826c
 
 COCOAPODS: 1.15.2
