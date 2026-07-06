@@ -1,26 +1,87 @@
 # react-native-depth-health
 
-react-native-depth-health
+Detect available iOS depth sensors and check whether their synchronized depth
+stream is healthy.
+
+> iOS only: the native implementation currently targets TrueDepth and LiDAR
+> cameras through AVFoundation.
 
 ## Installation
-
 
 ```sh
 npm install react-native-depth-health
 ```
 
+For iOS, install pods after adding the package:
+
+```sh
+cd ios && pod install
+```
+
+## API
+
+### `getSensors()`
+
+Returns the available iOS depth sensors synchronously.
+
+```ts
+type DepthSensor = {
+  type: 'structured-light' | 'time-of-flight';
+  position: 'front' | 'back';
+};
+
+function getSensors(): DepthSensor[];
+```
+
+The iOS implementation maps:
+
+- front `AVCaptureDevice.DeviceType.builtInTrueDepthCamera` to
+  `{ type: 'structured-light', position: 'front' }`
+- back `AVCaptureDevice.DeviceType.builtInLiDARDepthCamera` to
+  `{ type: 'time-of-flight', position: 'back' }`
+
+### `checkSensors()`
+
+Checks each available iOS depth sensor and resolves with a health result.
+
+```ts
+type DepthSensorHealth = {
+  type: 'structured-light' | 'time-of-flight';
+  position: 'front' | 'back';
+  healthy: boolean;
+};
+
+function checkSensors(): Promise<DepthSensorHealth[]>;
+```
+
+Health is evaluated with AVFoundation by:
+
+1. Opening `.builtInTrueDepthCamera` and/or `.builtInLiDARDepthCamera`.
+2. Attaching an `AVCaptureDepthDataOutput` with `isFilteringEnabled = false`.
+3. Receiving `AVCaptureSynchronizedDepthData` through
+   `AVCaptureDataOutputSynchronizer`.
+4. Marking a sensor unhealthy when `depthDataWasDropped` is `true` and
+   `droppedReason` is `AVCaptureOutput.DataDroppedReason.discontinuity`.
+
+If a sensor cannot be opened or no synchronized depth sample is received before
+the native timeout, the sensor is reported as unhealthy.
 
 ## Usage
 
+```ts
+import { checkSensors, getSensors } from 'react-native-depth-health';
 
-```js
-import { multiply } from 'react-native-depth-health';
+const sensors = getSensors();
+// [{ type: 'structured-light', position: 'front' }, ...]
 
-// ...
-
-const result = multiply(3, 7);
+const health = await checkSensors();
+// [{ type: 'structured-light', position: 'front', healthy: true }, ...]
 ```
 
+## iOS permissions
+
+Because `checkSensors()` opens camera capture devices, your app should include an
+`NSCameraUsageDescription` entry in its iOS `Info.plist`.
 
 ## Contributing
 
