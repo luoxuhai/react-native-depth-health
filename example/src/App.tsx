@@ -14,9 +14,11 @@ export default function App() {
   useEffect(() => {
     checkSensors({
       position: 'back',
-      type: 'time-of-flight',
     })
-      .then(setHealth)
+      .then((result) => {
+        console.log('Depth health:', result);
+        setHealth(result);
+      })
       .catch(console.error);
   }, []);
 

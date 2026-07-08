@@ -59,6 +59,9 @@ type DepthSensorHealth = {
 function checkSensors(filter?: DepthSensorFilter): Promise<DepthSensorHealth[]>;
 ```
 
+`healthy` is `true` only when the native check receives depth data and finds at
+least one finite positive value while scanning the full depth map.
+
 ## Usage
 
 ```ts
